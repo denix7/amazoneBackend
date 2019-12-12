@@ -39,5 +39,30 @@ module.exports =
                 });
             }
         });
+    },
+
+    loginUser: function(req, res, next)
+    {
+        User.findOne({email: req.body.email}, (err, user) => {
+            if(err)
+                throw err;
+
+            else if(!user)
+                res.json({success: false, message: 'Authenticated failed, user not found'});
+
+            else if(user)
+            {
+                var validPassword = user.comparePassword(req.body.password);
+                if(!validPassword)
+                {
+                    res.json({success: false, message: 'Authenticated failed, invalid password'});
+                }    
+                else
+                {
+                    var token = jwt.sign({user:user}, config.secret, {expiresIn: '7d'});
+                    res.json({success: true, message: "User login!", token: token});
+                }
+            }   
+        });
     }
 }

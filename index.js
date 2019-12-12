@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-// cors = require('cors');
+cors = require('cors');
 
 const app = express();
 const config = require('./config');
@@ -22,17 +22,11 @@ mongoose.set('useCreateIndex', true);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(morgan('dev'));
-// app.use(cors());
+app.use(cors());
 
 //user routes
 const userRoutes = require('./routes/account');
 app.use('/api/accounts', userRoutes);
-
-// app.get('/', (req, res, next) => {
-//     res.json({
-//         user: 'Dennis'
-//     });
-// });
 
 app.listen(config.port, err => {
     console.log('Magic happens on port ' + config.port);
