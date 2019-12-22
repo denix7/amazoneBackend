@@ -26,7 +26,9 @@ app.use(cors());
 
 //user routes
 const userRoutes = require('./routes/account');
+const categoryRoutes = require('./routes/category')
 app.use('/api/accounts', userRoutes);
+app.use('/api', categoryRoutes);
 
 app.listen(config.port, err => {
     console.log('Magic happens on port ' + config.port);

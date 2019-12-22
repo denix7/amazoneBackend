@@ -6,7 +6,7 @@ var checkJWT = require('../middleware/check-jwt');
 const User = require('../models/user');
 const UserController = require('../controllers/account');
 
-router.get('/signup', UserController.home);
+router.get('/', UserController.home);
 router.post('/signup', UserController.saveUser);
 router.post('/login', UserController.loginUser);
 
