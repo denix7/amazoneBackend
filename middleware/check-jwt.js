@@ -12,7 +12,7 @@ module.exports = function(req, res, next)
             {
                 res.json({
                     success: false,
-                    message: 'Failed to authenticate token'
+                    message: 'Failed to authenticate token or jwt expired'
                 });
             }
             else

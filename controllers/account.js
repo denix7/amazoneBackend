@@ -17,6 +17,7 @@ module.exports =
         user.password = req.body.password;
         user.image = user.gravatar();
         user.isSeller = req.body.isSeller;
+        console.log(user.image);
 
         User.findOne({email: req.body.email.toLowerCase()}, (err, userStored) => {
             if(userStored)
@@ -59,7 +60,7 @@ module.exports =
                 }    
                 else
                 {
-                    var token = jwt.sign({user:user}, config.secret, {expiresIn: '7d'});
+                    var token = jwt.sign({user:user}, config.secret, {expiresIn: 60 * 60});
                     res.json({success: true, message: "User login!", token: token});
                 }
             }   
@@ -68,10 +69,10 @@ module.exports =
 
     getProfile: function(req, res, next)
     {
-        User.find({_id: req.decoded.user._id}, (err, user) => {
+        User.findOne({_id: req.decoded.user._id}, (err, user) => {
             if(err)
                 throw err;
-            res.json({success: true, message: "Successful", user});
+            res.json({success: true, message: "Successful", user:user});
         });
     },
 
@@ -83,7 +84,7 @@ module.exports =
             
             if(req.body.name) user.name = req.body.name;
             if(req.body.email) user.email = req.body.email;
-            if(req.body.email) user.password = req.body.password;
+            if(req.body.password) user.password = req.body.password;
 
             user.isSeller = req.body.isSeller;
 
