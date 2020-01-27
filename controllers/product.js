@@ -2,6 +2,7 @@ var Product = require('../models/product');
 var User = require('../models/user');
 var config = require('../config');
 var fs = require('fs');
+var faker = require('faker');
 
 module.exports = 
 {
@@ -63,6 +64,25 @@ module.exports =
 
             res.json({success: true, message: 'Successful', products:productsStored});
         });
+    },
+
+    faker(req, res, next)
+    {
+        for(var i=0; i<10; i++)
+        {
+            let product = new Product();
+            product.name = faker.commerce.product();
+            product.price = faker.commerce.price();
+            product.cantity = faker.finance.amount();
+            product.description = faker.lorem.text();
+            product.image = faker.image.fashion();
+            product.owner = "5df2859ae208203ebc2f2bf6";
+            product.category = "5dfec481b9a91215c037b9e5";
+            
+            product.save();
+        }
+
+        res.json({message: 'Successful added 10 products'});
     }
 }
 

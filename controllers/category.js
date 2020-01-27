@@ -49,5 +49,30 @@ module.exports =
                 })
             }
         })
-    }
+    },
+
+    editCategory: (req, res) => {
+
+        categoryUpdated = req.body;
+        categoryId = req.params.id;
+
+        Category.findByIdAndUpdate(categoryId, categoryUpdated, {new:true}, (error, categoryUpdated) => {
+            if(categoryUpdated)
+            {
+                // category.save();
+                res.json({
+                    success: true,
+                    message: 'Category saved',
+                    category: categoryUpdated
+                });
+            }
+            else
+            {
+                res.json({
+                    success : false,
+                    message: 'This category does not exist'
+                });
+            }                
+        });
+    },
 }

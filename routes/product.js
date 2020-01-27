@@ -12,5 +12,6 @@ var checkJWT = require('../middleware/check-jwt');
 
 router.get('/', checkJWT, ProductController.getProducts);
 router.post('/', checkJWT, [md_upload], ProductController.createProduct);
+router.get('/faker/test', ProductController.faker);
 
 module.exports = router;

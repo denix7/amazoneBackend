@@ -10,4 +10,7 @@ router.route('/categories')
     .get(checkJWT, CategoryController.getCategories)
     .post(checkJWT, CategoryController.createCategory);
 
+router.route('/categories/:id')
+    .put(checkJWT, CategoryController.editCategory);
+
 module.exports = router;
