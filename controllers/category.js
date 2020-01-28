@@ -75,4 +75,25 @@ module.exports =
             }                
         });
     },
+
+    deleteCategory: (req ,res) =>
+    {
+        categoryId = req.params.id;
+
+        Category.findByIdAndDelete(categoryId, (error, categoryDeleted) => {
+            if(error)
+            {
+                res.json({
+                    success: 'false',
+                    message: 'Error en la peticion'
+                });
+            }else
+            {
+                res.json({
+                    success: 'true',
+                    message: 'Category deleted'
+                });
+            }
+        })
+    }
 }

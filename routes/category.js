@@ -11,6 +11,7 @@ router.route('/categories')
     .post(checkJWT, CategoryController.createCategory);
 
 router.route('/categories/:id')
-    .put(checkJWT, CategoryController.editCategory);
+    .put(checkJWT, CategoryController.editCategory)
+    .delete(checkJWT, CategoryController.deleteCategory);
 
 module.exports = router;
