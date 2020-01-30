@@ -32,7 +32,7 @@ const productRoutes = require('./routes/product');
 app.use('/api/accounts', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/seller/products', productRoutes);
-app.use('/api/products', productRoutes);
+app.use('/api', productRoutes);
 
 app.listen(config.port, err => {
     console.log('Magic happens on port ' + config.port);

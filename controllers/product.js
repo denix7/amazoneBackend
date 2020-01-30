@@ -38,7 +38,7 @@ module.exports =
             message: 'Successful added 10 products'});
     },
 
-    getProducts(req, res, next)
+    getSellerProducts(req, res, next)
     {
         Product.find({owner: req.decoded.user._id})
             .populate('owner', 'name image email isSeller _id')
@@ -179,6 +179,47 @@ module.exports =
                 });
             }
         });
+    },
+
+    getAllProducts(req, res, next)
+    {
+        var page = 1
+        if(req.params.page)
+        {
+            page = req.params.page;
+        }
+        
+        var itemsPerPage = 10;
+        
+        Product.find({})
+            .sort('name')
+            .populate('category')
+            .populate('owner')
+            .paginate(page, itemsPerPage, (err, products, total) => {
+                if(err) 
+                {
+                    return res.json({
+                        success: false,
+                        message: 'Error en la peticion'
+                    });
+                }
+                else if(!products)
+                {
+                    return res.json({
+                        success: false,
+                        message: 'No se han encontrado productos'
+                    })
+                }
+                else
+                {
+                    return res.json({
+                        success: true,
+                        total: total,
+                        pages: Math.ceil(total / itemsPerPage),
+                        products: products
+                    })
+                }
+        })
     }
 }
 
