@@ -1,5 +1,8 @@
 var Category = require('../models/category');
+var Product = require('../models/product');
 var config = require('../config');
+var mongoosePagination = require('mongoose-pagination');
+var async = require('async');
 
 module.exports = 
 {
@@ -95,5 +98,110 @@ module.exports =
                 });
             }
         })
+    },
+
+    getSpecificCategory: (req, res, next) =>
+    {
+        var perPage = 5;
+        var page = 1;
+        
+        if(req.params.page)
+            page = req.params.page;
+        
+        async.waterfall([
+            function(callback)
+            {
+                Product.countDocuments({category: req.params.id}, (err, countDocuments) => {
+                    var totalProducts = countDocuments;
+                    callback(err, totalProducts)
+                });
+            },
+
+            function(totalProducts, callback)
+            {
+                Product.find({category: req.params.id})
+                    .skip((perPage * page)-page)
+                    .limit(perPage)
+                    .populate('category')
+                    .populate('owner')
+                    .exec((err, products) => {
+
+                        if(err) return next(err);
+                        callback(err, products, totalProducts)
+                    });
+            },
+
+            function(products, totalProducts, callback)
+            {
+                Category.findOne({_id: req.params.id}, {"_id":0, "createdAt":0, "__v":0}, (err, category) => {
+                    if(err) return next(err);
+
+                    res.json({
+                        success: true,
+                        message: 'category',
+                        products: products,
+                        totalProducts: totalProducts,
+                        categoryName: category,
+                        pages: Math.ceil(totalProducts / perPage)
+                    });
+                });
+            },
+        ]);
+    },
+
+    getSpecificCategoryParallel: (req, res, next) =>
+    {
+        var perPage = 5;
+        var page = 1;
+        
+        if(req.params.page)
+            page = req.params.page;
+        
+        async.parallel([
+            function(callback)
+            {
+                Product.countDocuments({category: req.params.id}, (err, countDocuments) => {
+                    var totalProducts = countDocuments;
+                    callback(err, totalProducts)
+                });
+            },
+
+            function(callback)
+            {
+                Product.find({category: req.params.id})
+                    .skip((perPage * page)-page)
+                    .limit(perPage)
+                    .populate('category')
+                    .populate('owner')
+                    .exec((err, products) => {
+
+                        if(err) return next(err);
+                        callback(err, products);
+                    });
+            },
+
+            function(callback)
+            {
+                Category.findOne({_id: req.params.id}, {"_id":0, "createdAt":0, "__v":0}, (err, category) => {
+                    if(err) return next(err);
+                    callback(err, category);
+                });
+            }
+
+        ], function(err, results)
+        {
+            var totalProducts = results[0];
+            var products = results[1];
+            var category = results[2];
+
+            res.json({
+                success: true,
+                message: 'category',
+                products: products,
+                totalProducts: totalProducts,
+                categoryName: category,
+                pages: Math.ceil(totalProducts / perPage)
+            });
+        });
     }
 }

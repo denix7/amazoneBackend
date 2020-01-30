@@ -13,5 +13,7 @@ router.route('/categories')
 router.route('/categories/:id')
     .put(checkJWT, CategoryController.editCategory)
     .delete(checkJWT, CategoryController.deleteCategory);
-
+    
+router.route('/categories/:id/:page?')
+    .get(CategoryController.getSpecificCategoryParallel);
 module.exports = router;
