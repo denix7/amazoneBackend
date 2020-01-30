@@ -17,4 +17,6 @@ router.get('/faker/test', ProductController.faker);
 router.post('/upload-image/:id?', [md_upload], ProductController.uploadImage);
 router.get('/get-image/:image', ProductController.getImage);
 
+router.get('/:id', checkJWT, ProductController.getSingleProduct);
+
 module.exports = router;

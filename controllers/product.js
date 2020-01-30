@@ -153,6 +153,32 @@ module.exports =
                 });
             }
         });
+    },
+
+    getSingleProduct(req, res, next)
+    {
+        var productId = req.params.id;
+
+        Product.findById({_id: productId})
+            .populate('category')
+            .populate('owner')
+            .exec((err, product) => {
+            if(err) 
+            {
+                return res.json({
+                    success: false,
+                    message: 'product doesnt exists'
+                });
+                
+            }
+            else if(product)
+            {
+                return res.json({
+                    success: true,
+                    product: product
+                });
+            }
+        });
     }
 }
 

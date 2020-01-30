@@ -4,16 +4,17 @@ var checkJWT = require('../middleware/check-jwt');
 
 const CategoryController = require('../controllers/category');
 
-router.get('/', CategoryController.category);
+// router.get('/', CategoryController.category);
 
-router.route('/categories')
+router.route('/')
     .get(checkJWT, CategoryController.getCategories)
     .post(checkJWT, CategoryController.createCategory);
 
-router.route('/categories/:id')
+router.route('/:id')
     .put(checkJWT, CategoryController.editCategory)
     .delete(checkJWT, CategoryController.deleteCategory);
     
-router.route('/categories/:id/:page?')
+router.route('/:id/:page?')
     .get(CategoryController.getSpecificCategoryParallel);
+    
 module.exports = router;
