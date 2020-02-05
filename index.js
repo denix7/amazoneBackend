@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 cors = require('cors');
 
+const configMail = require('./configMail');
+
 const app = express();
 const config = require('./config');
 
@@ -33,6 +35,11 @@ app.use('/api/accounts', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/seller/products', productRoutes);
 app.use('/api', productRoutes);
+
+app.post('/api/email', (req, res) => {
+    configMail(req.body);
+    res.status(200).send({message: 'email send successfuly'});
+});
 
 app.listen(config.port, err => {
     console.log('Magic happens on port ' + config.port);
