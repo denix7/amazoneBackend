@@ -137,8 +137,6 @@ module.exports =
         var file = req.params.image;
         var path_file = './uploads/products/' + file;
 
-        console.warn(path_file);
-        
 
         fs.exists(path_file, (exists) => {
             if(exists)

@@ -7,7 +7,7 @@ const CategoryController = require('../controllers/category');
 // router.get('/', CategoryController.category);
 
 router.route('/')
-    .get(checkJWT, CategoryController.getCategories)
+    .get(CategoryController.getCategories)
     .post(checkJWT, CategoryController.createCategory);
 
 router.route('/:id')

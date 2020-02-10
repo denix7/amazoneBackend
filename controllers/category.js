@@ -102,11 +102,8 @@ module.exports =
 
     getSpecificCategory: (req, res, next) =>
     {
-        var perPage = 5;
-        var page = 1;
-        
-        if(req.params.page)
-            page = req.params.page;
+        var perPage = 10;
+        var page = req.querty.page;
         
         async.waterfall([
             function(callback)
@@ -134,7 +131,6 @@ module.exports =
             function(products, totalProducts, callback)
             {
                 Category.findOne({_id: req.params.id}, {"_id":0, "createdAt":0, "__v":0}, (err, category) => {
-                    if(err) return next(err);
 
                     res.json({
                         success: true,
@@ -151,11 +147,8 @@ module.exports =
 
     getSpecificCategoryParallel: (req, res, next) =>
     {
-        var perPage = 5;
-        var page = 1;
-        
-        if(req.params.page)
-            page = req.params.page;
+        var perPage = 10;
+        var page = req.query.page;
         
         async.parallel([
             function(callback)
