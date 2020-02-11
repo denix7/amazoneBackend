@@ -13,6 +13,7 @@ const ProductSchema = new Schema({
     image: String,
     owner: {type: Schema.Types.ObjectId, ref:'User'},
     category: {type: Schema.Types.ObjectId, ref:'Category'},
+    reviews: [{type: Schema.Types.ObjectId, ref:'Review'}],
     createdAt: {type: Date, default: Date.now}
 });
 

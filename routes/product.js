@@ -18,6 +18,8 @@ router.post('/upload-image/:id?', [md_upload], ProductController.uploadImage);
 router.get('/get-image/:image', ProductController.getImage);
 
 router.get('/product/:id', ProductController.getSingleProduct);
-router.get('/products/:page?', ProductController.getAllProducts), 
+router.get('/products/:page?', ProductController.getAllProducts);
+
+router.post('/products/review', checkJWT, ProductController.createReview);
 
 module.exports = router;

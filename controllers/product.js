@@ -4,6 +4,8 @@ var config = require('../config');
 var fs = require('fs');
 var path = require('path');
 var faker = require('faker');
+var Review = require('../models/review');
+var async = require('async');
 
 module.exports = 
 {
@@ -215,9 +217,48 @@ module.exports =
                         total: total,
                         pages: Math.ceil(total / itemsPerPage),
                         products: products
-                    })
+                    });
                 }
-        })
+        });
+
+    },
+
+    createReview(req, res, next)
+    {
+        async.waterfall([
+            function(callback)
+            {
+                Product.findOne({_id: req.body.productId}, (err, product) => {
+                    if(product)
+                    {
+                        callback(err, product);
+                    }
+                });
+            },
+
+            function(product)
+            {
+                let review = new Review();
+
+                if(req.body.title)
+                    review.title = req.body.title;
+                if(req.body.description)
+                    review.description = req.body.description;
+
+                review.rating = req.body.rating;
+                review.owner = req.decoded.user._id;
+
+                product.reviews.push(review._id);
+
+                product.save();
+                review.save();
+
+                res.json({
+                    success: true,
+                    message: "Review added successfully"
+                });
+            }
+        ])
     }
 }
 

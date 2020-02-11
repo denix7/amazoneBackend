@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const {Schema} = mongoose;
 
-const CategorySchema = new Schema({
+const ReviewSchema = new Schema({
     owner: {type: Schema.Types.ObjectId, ref: 'User'},
     title: { type: String},
     description: { type: String},
