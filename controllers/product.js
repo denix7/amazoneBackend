@@ -195,6 +195,10 @@ module.exports =
             .sort('name')
             .populate('category')
             .populate('owner')
+            .populate({
+                path: 'reviews',
+                populate: { path: 'owner' }
+            })
             .paginate(page, itemsPerPage, (err, products, total) => {
                 if(err) 
                 {
