@@ -162,6 +162,10 @@ module.exports =
         Product.findById({_id: productId})
             .populate('category')
             .populate('owner')
+            .populate({
+                path: 'reviews',
+                populate: { path: 'owner' }
+            })
             .exec((err, product) => {
             if(err) 
             {
