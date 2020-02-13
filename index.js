@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 cors = require('cors');
 
 const configMail = require('./configMail');
+const stipe = require('stripe')('pk_test_BOzSO3utMwuWZbrdpEVuqpKe00Musp6epv');
 
 const app = express();
 const config = require('./config');
