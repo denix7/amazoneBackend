@@ -31,11 +31,13 @@ app.use(cors());
 const userRoutes = require('./routes/account');
 const categoryRoutes = require('./routes/category');
 const productRoutes = require('./routes/product');
+const orderRoutes = require('./routes/order');
 
 app.use('/api/accounts', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/seller/products', productRoutes);
 app.use('/api', productRoutes);
+app.use('/api/order', orderRoutes);
 
 app.post('/api/email', (req, res) => {
     configMail(req.body);
